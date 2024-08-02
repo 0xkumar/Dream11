@@ -19,9 +19,15 @@ struct PlayerDetails{
 }
 
 interface ITournament{
+    event TournamentManagerChanged(address indexed oldTournamentManager, Manager);
+    event TournamentNameChanged(string indexed oldTournamentName, string indexed TournamentName);
+    event TournamentTeamsCountChanged(uint indexed oldTournamentTeams, uint indexed NewTournamentTeamsCount);
 
     function AddPlayersForSquad(string TeamName,string PlayerName,uint Points) external;
     function AddPlayersForTeam(string TeamName, string PlayerName) external;
     function CreateDream11Team(string PlayerName) external;
-    
+    function changeManager(address NewManager) external;
+    function changeTotalTeams(uint _TotalTeams) external;
+    function changeTournamentName(string calldata _TournamentName) external;
+
 }

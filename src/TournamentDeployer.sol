@@ -11,7 +11,7 @@ Todo
 1. If the Ipl is played in the next Year the names will be same
 Answer: We can keep the Tournaments Name by including the year.
  */
-contract Factory is IFactory, Ownable2Step{
+contract TournamentDeployer is ITournamentDeployer, Ownable2Step{
 
     address private immutable ORG_IMPL;
 
@@ -25,7 +25,7 @@ contract Factory is IFactory, Ownable2Step{
 
     function deployTournament(address Manager, uint Total_Teams, string calldata TournamentName) external onlyOwner{
         ITournament Tournament = ITournament(Clones.clone(ORG_IMPL));
-        Tournament.initialize(Manager,Total_Teams);
+        Tournament.initialize(Manager,Total_Teams,TournamentName);
 
         TournamentNameToAddress[tournamentName] = address(Tournament);
         TournamentDetails memory Tournament_Details =  TournamentDetails({
@@ -39,6 +39,18 @@ contract Factory is IFactory, Ownable2Step{
         Tournaments[address(Tournament)] = Tournament_Details;
 
         emit TournamentDeployed(address indexed Manager, uint indexed Total_Teams, string indexed TournamentName);
+    }
+
+    function changeManager(address _newTournamentManager, string calldata _TournamentName ) external onlyOwner{
+        address TournamentContractAddress = TournamentNameToAddress[_TournamentName];
+        address oldTournamentManager = Tournaments[TournamentContractAddress].Manager
+        Tournaments[TournamentContractAddress].Manager = _newManager;
+        ITournament(TournamentContractAddress).changeManager(_newManager);
+        emit TournamentManagerChanged(address indexed oldTournamentManager, address indexed _newTournamentManager);
+    }
+
+    function changeTournamentName(string calldata _newTournamentName, string calldata _TournamentName, address TournamentAddress) external{
+        
     }
 
     function getTournamentAddressByName(string calldata TournamentName) external view returns (tournament_address){

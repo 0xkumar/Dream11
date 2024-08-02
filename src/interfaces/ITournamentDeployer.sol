@@ -9,7 +9,7 @@ struct TournamentDetails{
 }
 
 
-interface IFactory{
+interface ITournamentDeployer{
 
     event TournamentDeployed(address indexed Manager, uint indexed Total_Teams, string indexed TournamentName);
     event TournamentManagerChanged(address indexed oldTournamentManager, address indexed NewTournamentManager);
