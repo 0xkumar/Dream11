@@ -6,6 +6,7 @@ struct TournamentDetails{
     address TournamentManager;
     string tournamentName;
     uint8 Total_Teams;
+    bool active;
 }
 
 

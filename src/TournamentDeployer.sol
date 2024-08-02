@@ -49,8 +49,33 @@ contract TournamentDeployer is ITournamentDeployer, Ownable2Step{
         emit TournamentManagerChanged(address indexed oldTournamentManager, address indexed _newTournamentManager);
     }
 
-    function changeTournamentName(string calldata _newTournamentName, string calldata _TournamentName, address TournamentAddress) external{
+    function changeTournamentName(string calldata _newTournamentName, string calldata _TournamentName, address TournamentAddress) external onlyOwner{
+        if(bytes(_newTournamentName).lenght() == 0) revert EmptyTournamentName();
+        if(bytes(_TournamentName).lenght != 0 && TournamentNameToAddress[_TournamentName] == address(0)) revert InavlidTournamentName();
+        if(TournamnetAddress != address(0) && Tournaments[TournamentAddress].TournamentAddress == address(0)) revert InValidTournamentAddress();
+        if(TournamentAddress == address(0)){
+            TournamentAddress = TournamentNameToAddress[_TournamentName];
+            Tournaments[TournamentAddress].tournamentName = _newTournamentName;
+            ITournament(TournamentAddress).changeTournamentName(_newTournamentName);
+        }
+        else{
+            Tournaments[TournamentAddress].tournamentName = _newTournamentName;
+            ITournament(TournamentAddress).changeTournamentName(_newTournamentName);
+        }
+
+        emit TournamentNamechanged(_newTournamentName,_TournamentName);
+    }
+
+    function changeTotalParticipatingTeams(address TournamentAddress, string calldata TournamentName, uint TeamsCount) external onlyOwner{
         
+        if((TournamentAddress == address(0) && bytes(TournametName).length == 0) || TeamsCount == 0) revert InvalidTeamCount();
+        if(TournamentAddress != address(0) && Tournaments[TournamentAddress].TournamentAddress == address(0)) revert InValidTournamentAddress();
+        if(bytes(TournamentName).length != 0 && TournamentNameToAddress[TournamentName] == address(0)) revert InvalidTeamName();
+        if(TournamentAddress == address(0)){
+            address TournamentAddress = TournamentNameToAddress[TournamentName];
+            Tournaments[TournamentAddress].Total_Teams = TeamsCount;
+            
+        }
     }
 
     function getTournamentAddressByName(string calldata TournamentName) external view returns (tournament_address){

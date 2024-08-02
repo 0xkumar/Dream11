@@ -21,7 +21,7 @@ struct PlayerDetails{
 interface ITournament{
     event TournamentManagerChanged(address indexed oldTournamentManager, Manager);
     event TournamentNameChanged(string indexed oldTournamentName, string indexed TournamentName);
-    event TournamentTeamsCountChanged(uint indexed oldTournamentTeams, uint indexed NewTournamentTeamsCount);
+    event TournamentTeamsCountChanged(uint indexed oldTotalTeams, uint indexed NewTeams);
 
     function AddPlayersForSquad(string TeamName,string PlayerName,uint Points) external;
     function AddPlayersForTeam(string TeamName, string PlayerName) external;

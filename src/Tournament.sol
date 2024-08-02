@@ -46,4 +46,13 @@ contract Tournament  is ITournament{
 
     }
 
+    function changeTotalParticipatingTeams(uint _TotalTeams) external onlyTournamentDeployer{
+        string memory oldTotalTeams = Total_Teams;
+        Total_Teams = _TotalTeams;
+
+        emit TotalTeamsCountChanged(oldTotalTeams,Total_Teams);
+    }
+
+    
+
 }
